@@ -66,16 +66,15 @@ def faceTrade_simulation(charCfg_main, charCfg_target, shootingRange=15, nSimulS
                     else:
                         charCfg_main.damage(charCfg_target.shoot(hasArmor, hasShield))
 
-                    ATB_TC += time
-                    charCfg_target.updateCooldown(time)
+                ATB_TC += time
+                charCfg_target.updateCooldown(time)
 
-                    if charCfg_main.isDead():
-                        avgTTD += ATB_TC
-                        fightFinished = True
+                if charCfg_main.isDead():
+                    avgTTD += ATB_TC
+                    fightFinished = True
 
-                        if verbose:
-                            print('MC is killed! Defeat!')
-
+                    if verbose:
+                        print('MC is killed! Defeat!')
 
 
             else:
@@ -88,7 +87,7 @@ def faceTrade_simulation(charCfg_main, charCfg_target, shootingRange=15, nSimulS
                         print('MC is reloading!')
                 else:
                     time = 1 / charCfg_main.RPS
-                    hasArmor = charCfg_target.hasArmor
+                    hasArmor = charCfg_target.hasArmor()
                     asShield = charCfg_target.shieldDeployed()
 
                     dmgVect = charCfg_main.shoot(hasArmor, asShield)

@@ -104,12 +104,12 @@ class characterConfig:
         ampWpnDMG = self.__getAmpWpnDmg()
         base_DMG = self.wpn_DMG * (1 + incrWpnDMG) * (1 + totalWpnDMG) * (1 + self.OoCD) * ampWpnDMG
 
-        if hitRoll < self.ProbHIT:
+        if hitRoll <= self.ProbHIT:
             hitm = 1
         else:
             hitm = 0
 
-        if HSDRoll < self.ProbHSD:
+        if HSDRoll <= self.ProbHSD:
             hsdm = 1
             if self.backpackTalent == 'Concussion':
                 self.__backpackTimer = 0
