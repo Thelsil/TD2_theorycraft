@@ -1,32 +1,28 @@
-from src.characterConfig import characterConfig
+from scripts.builds.get_TrashBuild import get_TrashBuild
+from scripts.builds.get_optiARBuild import get_optiARBuild
 from src.faceTrade_simulation import faceTrade_simulation
 
-nBlueCore_main   = 4
-nBlueCore_target = 5
+# Example on how to run a 1v1 facetrade simulation.
+# Pre-defined builds are located in scripts/builds, check these files to understand how to make your own builds!
 
-charCfg_main = characterConfig()
-charCfg_main.CHC            = 0.6
-charCfg_main.CHD            = 1.73
-charCfg_main.HSD            = 0.9
-charCfg_main.ProbHSD        = 0.25
-charCfg_main.ProbHIT        = 0.75
-charCfg_main.hasUnbreakable = True
-charCfg_main.RPS            = 15
-charCfg_main.MAG_size       = 50
-charCfg_main.reload_time    = 2.2
-charCfg_main.configure_defense(nBlueCore_main)
+# Simulation setup.
+shootingRange   = 15    # Set the shooting range between players (in meter).
+numSimulSamples = 10**6 # Number of 1v1 to simulate. If it takes too long, lower this number.
 
-charCfg_target = characterConfig()
-charCfg_target.copy(charCfg_main)
-charCfg_main.configure_defense(nBlueCore_target)
+# Instanciate a well designed AR build.
+nBlueCore   = 5 # The number of blue core can be configured for the main build.
+good_build  = get_optiARBuild(nBlueCore)
 
-# AR base damage * ( 1 + (10% SHD level + 25% WTD (fenris + AR) + 7% spec + 30% In Sync = 72%) + 15%*nRedCore)
-# x 8% DTA x 18% OoCD x 10% concussion = 155.6% (note: no firewall dmg buff because this scenario is above 10m range)
-# FAMAS base damage = 18560, RPS = 15
-# FAL base damage   = 23890, RPS = 65/6, add +10% CHD (firewall mode)
-charCfg_main.base_DMG   = 18560 * (1 + 0.62 + 0.15 * (6-nBlueCore_main))*1.4018
-charCfg_target.base_DMG = 18560 * (1 + 0.72 + 0.15 * (6-nBlueCore_target))*1.4018
+# Instanciate a badly designed AR build from a certain youtuber...
+bad_build    = get_TrashBuild()
 
-probVictory = faceTrade_simulation(charCfg_main, charCfg_target)
-print(probVictory)
+# Run the simulation!
+simulResults = faceTrade_simulation(good_build, bad_build, shootingRange, numSimulSamples)
+
+# Display the simulation results in the console.
+simulResults.display()
+
+
+
+
 
